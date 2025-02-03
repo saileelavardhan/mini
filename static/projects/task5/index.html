@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyMart - Your Daily Essentials</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #87CEEB; /* Sky Blue */
+            --secondary-color: #00BFFF; /* Deep Sky Blue */
+            --accent-color: #4682B4; /* Steel Blue */
+            --white: #ffffff;
+            --gray-light: #f5f6f7;
+            --gray-dark: #95a5a6;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: var(--gray-light);
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-dark);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 2.5rem 0.8rem 1rem;
+            border: 1px solid var(--gray-dark);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-dark);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            padding: 0.2rem;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card {
+            background: var(--white);
+            border: none;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        .product-price {
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .add-to-cart {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .add-to-cart:hover {
+            background: var(--accent-color);
+        }
+
+        /* Quantity Controls */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--accent-color);
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 1rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        .remove-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .cart-total {
+            padding: 1rem;
+            background: var(--gray-light);
+            text-align: center;
+        }
+
+        .continue-shopping {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .continue-shopping:hover {
+            background: var(--accent-color);
+        }
+
+        /* Add these styles for order confirmation */
+        .order-confirmation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .success-message {
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .success-message i {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .success-message h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-details {
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 10px;
+            animation: fadeInUp 0.5s ease-out 0.2s;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #333;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add these styles for the splash screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .logo-container {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            animation: scaleLogo 1.5s ease-in-out;
+        }
+
+        .app-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--secondary-color);
+            animation: loading 2s ease-in-out forwards;
+        }
+
+        .app-name {
+            margin-top: 20px;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes scaleLogo {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            20% { width: 20%; }
+            50% { width: 60%; }
+            80% { width: 85%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add these styles for search functionality */
+        .search-bar {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 2.5rem 0.8rem 1rem;
+            border: 1px solid var(--gray-dark);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-dark);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            padding: 0.2rem;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-screen" id="splashScreen">
+        <div class="logo-container">
+            <img src="https://www.ujudebug.com/wp-content/uploads/2020/05/dailymart.jpg" alt="DailyMart" class="app-logo" style="border-radius: 10px;">
+        </div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="app-name">DailyMart</div>
+    </div>
+
+    <div class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <img src="https://www.ujudebug.com/wp-content/uploads/2020/05/dailymart.jpg" alt="DailyMart Logo" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+                DailyMart
+            </a>
+            <div class="search-bar">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="Search for products..." 
+                       oninput="searchProducts(event)">
+                <i class="fas fa-search"></i>
+                <button class="clear-search" onclick="clearSearch()">×</button>
+            </div>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="products">
+        <div class="products-grid">
+            <!-- Product items will be dynamically added here -->
+        </div>
+    </div>
+
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">×</span>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total">
+            <h3>Total: $0.00</h3>
+            <button class="continue-shopping" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const splashScreen = document.getElementById('splashScreen');
+            const mainContent = document.querySelector('.header');
+            
+            // Hide main content initially
+            mainContent.style.opacity = '0';
+            
+            // Remove splash screen after animation
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                mainContent.style.opacity = '1';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 500);
+            }, 2500);
+        });
+
+        const products = [
+            // Example products
+            {
+                id: 1,
+                name: "Fresh Bananas",
+                price: 0.49,
+                image: "https://www.jiomart.com/images/product/original/590008622/banana-mrl-pack-5-pcs-approx-600-g-700-g-product-images-o590008622-p590804206-1-202408070949.jpg?im=Resize=(1000,1000)",
+                category: "Fruits & Vegetables",
+                quantity: 0
+            },
+            {
+                id: 2,
+                name: "Red Apples (1kg)",
+                price: 0.99,
+                image: "https://www.goodfruit.com/wp-content/uploads/snowflakeApple.jpg",
+                category: "Fruits & Vegetables",
+                quantity: 0
+            },
+            {
+                id: 3,
+                name: "Tomatoes(500g)",
+                price: 0.99,
+                image: "https://dukaan.b-cdn.net/700x700/webp/upload_file_service/2c3c6711-40f0-4991-bb52-bef290831f16/tomatoes.jpg",
+                category: "Fruits & Vegetables",
+                quantity: 0
+            },
+            {
+                id: 4,
+                name: "Onions (1kg)",
+                price: 1.49,
+                image: "https://rukminim2.flixcart.com/image/850/1000/xif0q/plant-seed/o/2/g/260-03-onion-arshiayat-original-imagt8dbmjhngbqt.jpeg?q=90&crop=false",
+                category: "Fruits & Vegetables",
+                quantity: 0
+            },
+            // Dairy & Eggs
+            {
+                id: 5,
+                name: "Organic Milk (1L)",
+                price: 1.49,
+                image: "https://iorganicmilk.com/cdn/shop/files/iorganic-a2-cow-milk-a2-milk-delhi-HERO_1600x.webp?v=1711301810",
+                category: "Dairy & Eggs",
+                quantity: 0
+            },
+            {
+                id: 6,
+                name: "Eggs (12 pcs)",
+                price: 2.49,
+                image: "https://cdn.bestsuppliers.com/seo_products_img/fr29001314692lzdq/e2cdfca3aed83ca9a5088b67e353a735.png!/rotate/180",
+                category: "Dairy & Eggs",
+                quantity: 0
+            },
+            {
+                id: 7,
+                name: "Cheese Slices",
+                price: 1.00,
+                image: "https://media.istockphoto.com/id/1454687188/photo/sliced-cheese-in-plastic-package-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=h7JrkHJus7i52VfOtwKs2-6tYC9r1Lkv19so52YXV8M=",
+                category: "Dairy & Eggs",
+                quantity: 0
+            },
+            // Bread & Bakery
+            {
+                id: 8,
+                name: "Wheat Bread",
+                price: 1.49,
+                image: "https://thumbs.dreamstime.com/b/isolated-loaf-bread-319188.jpg",
+                category: "Bread & Bakery",
+                quantity: 0
+            },
+            // Pantry Items
+            {
+                id: 9,
+                name: "Rice (5kg)",
+                price: 9.99,
+                image: "https://5.imimg.com/data5/SELLER/Default/2022/1/LT/DS/NT/134285150/paddy-rice-500x500.jpg",
+                category: "Pantry",
+                quantity: 0
+            },
+            // Pantry Items
+            {
+                id: 10,
+                name: "Cooking Oil (1L)",
+                price: 2.99,
+                image: "https://s.alicdn.com/@sc04/kf/A264e95cb8d1e4278a1c533a2d7134f0dh.jpg",
+                category: "Pantry",
+                quantity: 0
+            },
+            {
+                id: 11,
+                name: "Sugar (1kg)",
+                price: 1.49,
+                image: "https://images.moneycontrol.com/static-mcnews/2024/06/20240618072008_3.jpg?impolicy=website&width=1600&height=900",
+                category: "Pantry",
+                quantity: 0
+            },
+            {
+                id: 12,
+                name: "Pink Salt (500g)",
+                price: 0.49,
+                image: "https://milletamma.com/cdn/shop/products/1400x1400_2_c4d575d5-3c9b-4c1e-87b7-e6a535303ac2_1200x1200.jpg?v=1717385951",
+                category: "Pantry",
+                quantity: 0
+            },
+            // Beverages
+            {
+                id: 13,
+                name: "Water Bottel (1L)",
+                price: 0.99,
+                image: "https://5.imimg.com/data5/ANDROID/Default/2024/9/448639854/YD/MS/KH/36902893/product-jpeg-500x500.jpg",
+                category: "Beverages",
+                quantity: 0
+            },
+            {
+                id: 14,
+                name: "Green Tea Bags",
+                price: 1.99,
+                image: "https://m.media-amazon.com/images/I/91WH-Lny5hL._AC_UF350,350_QL80_.jpg",
+                category: "Beverages",
+                quantity: 0
+            },
+            // Household
+            {
+                id: 15,
+                name: "Toilet Paper rolls",
+                price: 2.99,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRruPBh6L8vI2TwamyRcHrwfAT7QxUQ_MAlDA&s",
+                category: "Household",
+                quantity: 0
+            },
+            {
+                id: 16,
+                name: "Dish Soap",
+                price: 0.19,
+                image: "https://ecobeige.com/cdn/shop/products/make-nice-company-ecofriendly-charcoal-solid-dish-soap-tone-black-dish-block-kitchen-cleaning-sustainable-compostable-organic-chemical-free-plastic-alternative-vancouver-Eco-Beige-2_700x700.jpg?v=1627257416",
+                category: "Household",
+                quantity: 0
+            },
+            {
+                id: 17,
+                name: "Detergent",
+                price: 0.99,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGEoEEbPcIaghnyHib-z4Rw-44_Y9eLxdZnkDW0PGoSIDPwz13d2HPiKuTrazgjPUP78&usqp=CAU",
+                category: "Household",
+                quantity: 0
+            },
+            // Personal Care
+            {
+                id: 18,
+                name: "Toothpaste",
+                price: 0.24,
+                image: "https://flipfit-cdn.akamaized.net/flipfit-prod-tmp/items/1703715050360-290372396MOR1V1.webp",
+                category: "Personal Care",
+                quantity: 0
+            },
+            {
+                id: 19,
+                name: "Shampoo(500ml)",
+                price: 1.99,
+                image: "https://m.media-amazon.com/images/I/71wI4fjOjLL._AC_UF350,350_QL80_.jpg",
+                category: "Personal Care",
+                quantity: 0
+            },
+            {
+                id: 20,
+                name: "Hand Soap",
+                price: 0.19,
+                image: "https://www.bedeckhome.com/media/catalog/product/m/u/murmur_spa_hand_soap_1.jpg?width=700&height=700&canvas=700,700&quality=80&bg-color=255,255,255&fit=bounds",
+                category: "Personal Care",
+                quantity: 0
+            },
+            // Snacks
+            {
+                id: 21,
+                name: "Potato Chips",
+                price: 0.99,
+                image: "https://image1.masterfile.com/getImage/NzAwLTA2NzE0MTIwZW4uMDAwMDAwMDA=AIjV5t/700-06714120en_Masterfile.jpg",
+                category: "Snacks",
+                quantity: 0
+            },
+            {
+                id: 22,
+                name: "Cookies",
+                price: 2.99,
+                image: "https://www.whatacrockmeals.com/cdn/shop/files/famous-4th-street-chocolate-chip-cookies-delivery_700x700.jpg?v=1717087048",
+                category: "Snacks",
+                quantity: 0
+            },
+            // Cleaning Supplies
+            {
+                id: 23,
+                name: "Multi Cleaner",
+                price: 3.99,
+                image: "https://m.media-amazon.com/images/I/61TaghgQ-8L._AC_UF1000,1000_QL80_.jpg",
+                category: "Cleaning",
+                quantity: 0
+            },
+            {
+                id: 24,
+                name: "Sponges 3",
+                price: 0.49,
+                image: "https://i8.amplience.net/i/flooranddecor/100385020_goldblatt-grout-sponge---3pk_1?fmt=auto&qlt=85",
+                category: "Cleaning",
+                quantity: 0
+            },
+            // Meat
+            {
+                id: 25,
+                name: "Chicken (1kg)",
+                price: 1.99,
+                image: "https://assets.tendercuts.in/product/C/H/594e4559-f6b7-417d-9aac-d0643b5711d3.jpg",
+                category: "Meat",
+                quantity: 0
+            },
+            {
+                id: 26,
+                name: "Salmon (500g)",
+                price: 2.99,
+                image: "https://www.bigsams.in/wp-content/uploads/2020/07/salmon-portion-300g-1000x1000_resized.jpg",
+                category: "Meat",
+                quantity: 0
+            },
+            {
+                id: 27,
+                name: "Shrimp (1kg)",
+                price: 3.99,
+                image: "https://atlasmeigoo.com/wp-content/uploads/2023/06/packing-shrimp-2-1024x931.jpg",
+                category: "Meat",
+                quantity: 0
+            }
+            // Add more products as needed
+        ];
+
+        let cart = [];
+        let cartTotal = 0;
+
+        function toggleCart() {
+            document.querySelector('.cart-sidebar').classList.toggle('active');
+        }
+
+        function updateQuantity(productId, change) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                product.quantity = Math.max(0, product.quantity + change);
+                updateProductDisplay(productId);
+                updateCart();
+            }
+        }
+
+        function updateProductDisplay(productId) {
+            const quantityDisplay = document.querySelector(`#quantity-${productId}`);
+            if (quantityDisplay) {
+                const product = products.find(p => p.id === productId);
+                quantityDisplay.textContent = product.quantity;
+            }
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product && product.quantity > 0) {
+                const cartItem = cart.find(item => item.id === productId);
+                if (cartItem) {
+                    cartItem.quantity += product.quantity;
+                } else {
+                    cart.push({ ...product });
+                }
+                product.quantity = 0;
+                updateProductDisplay(productId);
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const cartItemsContainer = document.querySelector('.cart-items');
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <div class="cart-item-quantity">
+                            <span>Quantity: ${item.quantity}</span>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                        </div>
+                        <p>$${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            document.querySelector('.cart-total h3').textContent = `Total: $${cartTotal.toFixed(2)}`;
+            document.querySelector('.cart-count').textContent = cart.reduce((total, item) => total + item.quantity, 0);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        function initializeProducts() {
+            const productsGrid = document.querySelector('.products-grid');
+            productsGrid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-price">$${product.price}</p>
+                    <div class="quantity-controls">
+                        <button onclick="updateQuantity(${product.id}, -1)" class="quantity-btn">-</button>
+                        <span id="quantity-${product.id}" class="quantity">0</span>
+                        <button onclick="updateQuantity(${product.id}, 1)" class="quantity-btn">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Add to Cart
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Initialize the page
+        initializeProducts();
+
+        // Add this function to your existing JavaScript
+        function filterProducts() {
+            const category = document.getElementById('categoryFilter').value;
+            const productsGrid = document.querySelector('.products-grid');
+            
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
+            
+            productsGrid.innerHTML = filteredProducts.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-price">$${product.price}</p>
+                    <div class="quantity-controls">
+                        <button onclick="updateQuantity(${product.id}, -1)" class="quantity-btn">-</button>
+                        <span id="quantity-${product.id}" class="quantity">0</span>
+                        <button onclick="updateQuantity(${product.id}, 1)" class="quantity-btn">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Add to Cart
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            const cartSidebar = document.querySelector('.cart-sidebar');
+            cartSidebar.innerHTML = `
+                <div class="cart-header">
+                    <h3>Order Confirmation</h3>
+                    <span class="close-cart" onclick="toggleCart()">×</span>
+                </div>
+                <div class="order-confirmation">
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Thank you for your order!</h2>
+                        <p>Your order has been successfully placed.</p>
+                    </div>
+                    <div class="order-details">
+                        <h3>Order Summary</h3>
+                        ${cart.map(item => `
+                            <div class="order-item">
+                                <span>${item.name} x ${item.quantity}</span>
+                                <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                        <div class="order-total">
+                            <strong>Total Amount:</strong>
+                            <strong>$${cartTotal.toFixed(2)}</strong>
+                        </div>
+                    </div>
+                    <button class="continue-shopping" onclick="continueShoppingAfterCheckout()">
+                        Continue Shopping
+                    </button>
+                </div>
+            `;
+        }
+
+        function continueShoppingAfterCheckout() {
+            // Reset cart and products
+            cart = [];
+            cartTotal = 0;
+            products.forEach(product => product.quantity = 0);
+            
+            // Add fade out animation to cart sidebar
+            const cartSidebar = document.querySelector('.cart-sidebar');
+            cartSidebar.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Reset cart sidebar HTML
+                cartSidebar.innerHTML = `
+                    <div class="cart-header">
+                        <h3>Your Cart</h3>
+                        <span class="close-cart" onclick="toggleCart()">×</span>
+                    </div>
+                    <div class="cart-items">
+                        <!-- Cart items will be dynamically added here -->
+                    </div>
+                    <div class="cart-total">
+                        <h3>Total: $0.00</h3>
+                        <button class="add-to-cart" onclick="checkout()">Proceed to Checkout</button>
+                    </div>
+                `;
+                
+                // Reset opacity and close cart
+                cartSidebar.style.opacity = '1';
+                cartSidebar.classList.remove('active');
+                
+                // Update cart display
+                updateCart();
+                
+                // Reset products display with animation
+                const productsGrid = document.querySelector('.products-grid');
+                productsGrid.style.opacity = '0';
+                
+                setTimeout(() => {
+                    initializeProducts();
+                    productsGrid.style.opacity = '1';
+                }, 300);
+                
+            }, 300);
+        }
+
+        function searchProducts(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const clearButton = document.querySelector('.clear-search');
+            const productsGrid = document.querySelector('.products-grid');
+            
+            // Show/hide clear button based on search input
+            clearButton.style.display = searchTerm.length > 0 ? 'block' : 'none';
+            
+            // Filter products based on search term
+            const filteredProducts = products.filter(product => {
+                return product.name.toLowerCase().includes(searchTerm) ||
+                       product.category.toLowerCase().includes(searchTerm);
+            });
+            
+            // Show no results message or filtered products
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <p>No products found matching "${event.target.value}"</p>
+                    </div>
+                `;
+            } else {
+                productsGrid.innerHTML = filteredProducts.map(product => `
+                    <div class="product-card" data-category="${product.category}">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity(${product.id}, -1)" class="quantity-btn">-</button>
+                            <span id="quantity-${product.id}" class="quantity">${product.quantity}</span>
+                            <button onclick="updateQuantity(${product.id}, 1)" class="quantity-btn">+</button>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            Add to Cart
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.querySelector('.clear-search');
+            
+            searchInput.value = '';
+            clearButton.style.display = 'none';
+            
+            // Reset products display
+            initializeProducts();
+        }
+
+        // Add keyboard event listener for search
+        document.getElementById('searchInput').addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                clearSearch();
+            }
+        });
+    </script>
+</body>
+</html>

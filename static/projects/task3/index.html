@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Calculator Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+            color: #fff;
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        .mobile-frame {
+            width: 375px;
+            height: 812px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .lock-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url('https://r1.ilikewallpaper.net/iphone-12-pro-max-wallpapers/download-109114/4k.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        .lock-screen.unlocked {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .lock-time {
+            margin-top: 100px;
+            font-size: 5rem;
+            color: white;
+            font-weight: 200;
+        }
+
+        .lock-date {
+            font-size: 1.2rem;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .unlock-hint {
+            position: absolute;
+            bottom: 100px;
+            color: white;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .swipe-indicator {
+            position: absolute;
+            bottom: 50px;
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 30px;
+            background: #000;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 10001;
+            transition: top 0.3s ease; /* Smooth transition for notch */
+        }
+
+        .status-bar {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            height: 44px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            z-index: 10000;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+        }
+
+        .time {
+            font-weight: 600;
+        }
+
+        .status-icons i {
+            margin-left: 8px;
+        }
+
+        .home-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url('https://r1.ilikewallpaper.net/iphone-12-pro-max-wallpapers/download-109114/4k.jpg') center/cover;
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 20px;
+            padding: 60px 20px 100px 20px;
+            transition: all 0.5s ease;
+        }
+
+        .app-icon {
+            width: 65px;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .app-icon.disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .app-icon i {
+            font-size: 28px;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 5px;
+        }
+
+        .app-icon span {
+            font-size: 10px;
+            color: white;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .app-icon:not(.disabled):hover {
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .calculator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            width: 100%;
+            max-width: 375px;
+            background: #000;
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .calculator.open {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .display {
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding: 20px;
+            position: relative;
+        }
+
+        .previous-operand {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            min-height: 30px;
+        }
+
+        .current-operand {
+            font-size: 3.5rem;
+            font-weight: 300;
+            transition: all 0.3s ease;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 20px;
+        }
+
+        button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            background: #333;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s;
+            border-radius: 50%;
+        }
+
+        button:active::after {
+            transform: translate(-50%, -50%) scale(2);
+        }
+
+        .operator {
+            background: #ff9f0a;
+            color: #fff;
+        }
+
+        .number {
+            background: #333;
+        }
+
+        .clear, .percent, .plusminus {
+            background: #a5a5a5;
+            color: #000;
+        }
+
+        .equals {
+            background: #ff9f0a;
+            color: #fff;
+        }
+
+        button:hover {
+            filter: brightness(120%);
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .home-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 5px;
+            background: white;
+            border-radius: 3px;
+            z-index: 1000;
+        }
+
+        .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .blur-background.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .wallpaper-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="lock-screen" id="lockScreen">
+            <div class="lock-time" id="lockTime"></div>
+            <div class="lock-date" id="lockDate"></div>
+            <div class="unlock-hint">Click to unlock</div>
+            <div class="swipe-indicator"></div>
+        </div>
+        <div class="notch" id="notch"></div>
+        <div class="status-bar">
+            <span class="time" id="time">12:00</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        <div class="home-screen">
+            <div class="wallpaper-overlay"></div>
+            
+            <!-- First row -->
+            <div class="app-icon disabled">
+                <i class="fas fa-phone"></i>
+                <span>Phone</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-message"></i>
+                <span>Messages</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-compass"></i>
+                <span>Safari</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-music"></i>
+                <span>Music</span>
+            </div>
+
+            <!-- Second row -->
+            <div class="app-icon disabled">
+                <i class="fas fa-envelope"></i>
+                <span>Mail</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-calendar"></i>
+                <span>Calendar</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-image"></i>
+                <span>Photos</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-camera"></i>
+                <span>Camera</span>
+            </div>
+
+            <!-- Third row -->
+            <div class="app-icon disabled">
+                <i class="fas fa-clock"></i>
+                <span>Clock</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-map"></i>
+                <span>Maps</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-cloud"></i>
+                <span>Weather</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-gear"></i>
+                <span>Settings</span>
+            </div>
+
+            <!-- Fourth row -->
+            <div class="app-icon disabled">
+                <i class="fab fa-app-store"></i>
+                <span>App Store</span>
+            </div>
+            <div class="app-icon" onclick="openCalculator()">
+                <i class="fas fa-calculator"></i>
+                <span>Calculator</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-notes-medical"></i>
+                <span>Notes</span>
+            </div>
+            <div class="app-icon disabled">
+                <i class="fas fa-folder"></i>
+                <span>Files</span>
+            </div>
+        </div>
+        <div class="home-indicator"></div>
+    </div>
+
+    <div class="blur-background"></div>
+
+    <div class="calculator">
+        <div class="display">
+            <div class="previous-operand" id="previousOperand"></div>
+            <div class="current-operand" id="currentOperand">0</div>
+        </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">AC</button>
+            <button class="plusminus" onclick="toggleSign()">±</button>
+            <button class="percent" onclick="percentage()">%</button>
+            <button class="operator" onclick="appendOperator('÷')">÷</button>
+
+            <button class="number" onclick="appendNumber('7')">7</button>
+            <button class="number" onclick="appendNumber('8')">8</button>
+            <button class="number" onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('×')">×</button>
+
+            <button class="number" onclick="appendNumber('4')">4</button>
+            <button class="number" onclick="appendNumber('5')">5</button>
+            <button class="number" onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('-')">−</button>
+
+            <button class="number" onclick="appendNumber('1')">1</button>
+            <button class="number" onclick="appendNumber('2')">2</button>
+            <button class="number" onclick="appendNumber('3')">3</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+
+            <button class="number" onclick="appendNumber('0')" style="grid-column: span 2; width: 152px; border-radius: 35px;">0</button>
+            <button class="number" onclick="appendNumber('.')">.</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let currentOperand = '0';
+        let previousOperand = '';
+        let operation = undefined;
+        let shouldResetScreen = false;
+
+        const currentOperandText = document.getElementById('currentOperand');
+        const previousOperandText = document.getElementById('previousOperand');
+        const notch = document.getElementById('notch');
+
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            
+            ripple.className = 'ripple';
+            ripple.style.left = `${event.clientX - rect.left}px`;
+            ripple.style.top = `${event.clientY - rect.top}px`;
+            
+            button.appendChild(ripple);
+            
+            ripple.addEventListener('animationend', () => {
+                ripple.remove();
+            });
+        }
+
+        // Add ripple effect to all buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', createRipple);
+        });
+
+        function clearDisplay() {
+            currentOperand = '0';
+            previousOperand = '';
+            operation = undefined;
+            updateDisplay();
+        }
+
+        function toggleSign() {
+            currentOperand = (parseFloat(currentOperand) * -1).toString();
+            updateDisplay();
+        }
+
+        function percentage() {
+            currentOperand = (parseFloat(currentOperand) / 100).toString();
+            updateDisplay();
+        }
+
+        function appendNumber(number) {
+            if (number === '.' && currentOperand.includes('.')) return;
+            if (shouldResetScreen) {
+                currentOperand = number;
+                shouldResetScreen = false;
+            } else {
+                currentOperand = currentOperand === '0' ? number : currentOperand + number;
+            }
+            updateDisplay();
+            animateNumber();
+        }
+
+        function appendOperator(op) {
+            if (operation !== undefined) calculate();
+            operation = op;
+            previousOperand = currentOperand;
+            shouldResetScreen = true;
+            updateDisplay();
+        }
+
+        function calculate() {
+            let computation;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+            
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operation) {
+                    case '+':
+                    computation = prev + current;
+                        break;
+                    case '-':
+                    computation = prev - current;
+                        break;
+                case '×':
+                    computation = prev * current;
+                        break;
+                case '÷':
+                        if (current === 0) {
+                            alert("Cannot divide by zero!");
+                            return;
+                        }
+                    computation = prev / current;
+                        break;
+                default:
+                    return;
+            }
+
+            currentOperand = computation.toString();
+            operation = undefined;
+            previousOperand = '';
+            updateDisplay();
+            animateResult();
+        }
+
+        function updateDisplay() {
+            currentOperandText.textContent = formatNumber(currentOperand);
+            if (operation != null) {
+                previousOperandText.textContent = `${formatNumber(previousOperand)} ${operation}`;
+            } else {
+                previousOperandText.textContent = '';
+            }
+        }
+
+        function formatNumber(number) {
+            // First, round the number to 4 decimal places
+            const roundedNumber = Number(parseFloat(number).toFixed(4));
+            const stringNumber = roundedNumber.toString();
+            const integerDigits = parseFloat(stringNumber.split('.')[0]);
+            const decimalDigits = stringNumber.split('.')[1];
+            let integerDisplay;
+
+            if (isNaN(integerDigits)) {
+                
+                integerDisplay = '0';
+            } else {
+                integerDisplay = integerDigits.toLocaleString('en', {
+                    maximumFractionDigits: 0
+                });
+            }
+
+            if (decimalDigits != null) {
+                // Ensure decimal digits are exactly 4 places
+                const paddedDecimals = decimalDigits.padEnd(4, '0').slice(0, 4);
+                return `${integerDisplay}.${paddedDecimals}`;
+            } else {
+                return integerDisplay;
+            }
+        }
+
+        function animateNumber() {
+            currentOperandText.classList.add('number-pressed');
+            setTimeout(() => {
+                currentOperandText.classList.remove('number-pressed');
+            }, 150);
+        }
+
+        function animateResult() {
+            currentOperandText.classList.add('scroll-left');
+            setTimeout(() => {
+                currentOperandText.classList.remove('scroll-left');
+            }, 300);
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (event) => {
+            if (event.key >= '0' && event.key <= '9') appendNumber(event.key);
+            if (event.key === '.') appendNumber('.');
+            if (event.key === '=' || event.key === 'Enter') calculate();
+            if (event.key === 'Backspace') clearDisplay();
+            if (event.key === 'Escape') clearDisplay();
+            if (event.key === '+') appendOperator('+');
+            if (event.key === '-') appendOperator('-');
+            if (event.key === '*') appendOperator('×');
+            if (event.key === '/') {
+                event.preventDefault();
+                appendOperator('÷');
+            }
+        });
+
+        // Update time in status bar
+        function updateTime() {
+            const timeElement = document.getElementById('time');
+            const now = new Date();
+            
+            // Get hours in 12-hour format
+            let hours = now.getHours();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            
+            // Get minutes with leading zero
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            // Update time display
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+
+        // Call updateTime immediately and set interval
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        function openCalculator() {
+            const calculator = document.querySelector('.calculator');
+            const blurBg = document.querySelector('.blur-background');
+            const homeScreen = document.querySelector('.home-screen');
+            
+            // Animate icon
+            const icon = document.querySelector('.app-icon');
+            icon.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                // Show blur background
+                blurBg.classList.add('active');
+                
+                // Open calculator
+                calculator.classList.add('open');
+                calculator.classList.add('opening');
+                
+                // Hide home screen
+                homeScreen.style.opacity = '0';
+            }, 200);
+        }
+
+        // Add close calculator function
+        function closeCalculator() {
+            const calculator = document.querySelector('.calculator');
+            const blurBg = document.querySelector('.blur-background');
+            const homeScreen = document.querySelector('.home-screen');
+            
+            calculator.classList.remove('open');
+            blurBg.classList.remove('active');
+            homeScreen.style.opacity = '1';
+        }
+
+        // Add swipe down to close
+        let touchStartY = 0;
+        document.querySelector('.calculator').addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.querySelector('.calculator').addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const diff = touchY - touchStartY;
+            
+            if (diff > 100) {
+                closeCalculator();
+            }
+        });
+
+        document.querySelectorAll('.app-icon.disabled').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const appName = icon.querySelector('span').textContent;
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 20px;
+                    font-size: 14px;
+                    z-index: 10002;
+                    backdrop-filter: blur(10px);
+                `;
+                notification.textContent = `${appName} is not available`;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, 1500);
+            });
+        });
+
+        // Lock screen functionality
+        function updateLockScreen() {
+            const now = new Date();
+            const timeElement = document.getElementById('lockTime');
+            const dateElement = document.getElementById('lockDate');
+            
+            // Update time
+            let hours = now.getHours();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}`;
+            
+            // Update date
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            dateElement.textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // Initialize lock screen
+        const lockScreen = document.getElementById('lockScreen');
+        lockScreen.addEventListener('click', () => {
+            lockScreen.classList.add('unlocked');
+            
+            // Add unlock animation effect
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 0;
+                height: 0;
+                background: white;
+                border-radius: 50%;
+                opacity: 0.3;
+                transition: all 0.5s ease;
+            `;
+            lockScreen.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.style.width = '200%';
+                ripple.style.height = '200%';
+                ripple.style.opacity = '0';
+            }, 50);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 500);
+        });
+
+        // Update lock screen time and date immediately and every second
+        updateLockScreen();
+        setInterval(updateLockScreen, 1000);
+
+        // Scroll event to move the notch
+        document.querySelector('.calculator').addEventListener('scroll', (e) => {
+            const scrollTop = e.target.scrollTop;
+            notch.style.top = `${Math.max(0, scrollTop)}px`;
+        });
+    </script>
+</body>
+</html>
