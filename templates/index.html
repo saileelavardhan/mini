@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leelavardhan - Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    
+
+    <nav class="nav">
+        <div class="nav-logo">
+            <div class="logo-image">
+                <img src="{{ url_for('static', filename='image/me.jpg') }}" alt="LV">
+            </div>
+            <span class="logo-text">LV</span>
+            <div class="logo-dot"></div>
+        </div>
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="glitch" data-text="Hello, I'm LeelaVardhan">Hello, I'm LeelaVardhan</h1>
+                <div class="hero-subtitle">
+                    I'm a .<span class="typed-text"></span>
+                </div>
+                <p class="hero-description">
+                    Passionate about creating beautiful and functional web applications.
+                    Turning ideas into reality through code.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn primary">View Projects</a>
+                    <a href="#contact" class="btn secondary">Contact Me</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <img src="{{ url_for('static', filename='image/me.jpg') }}" alt="LeelaVardhan">
+                    <div class="rotating-dots">
+                        <div class="dot" style="--i:0"></div>
+                        <div class="dot" style="--i:1"></div>
+                        <div class="dot" style="--i:2"></div>
+                        <div class="dot" style="--i:3"></div>
+                        <div class="dot" style="--i:4"></div>
+                        <div class="dot" style="--i:5"></div>
+                        <div class="dot" style="--i:6"></div>
+                        <div class="dot" style="--i:7"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>I'm a Full Stack Developer with a passion for creating innovative web solutions. 
+                With expertise in both frontend and backend technologies, I bring ideas to life through clean, 
+                efficient code and intuitive user experiences.</p>
+            </div>
+
+            <!-- Education Section -->
+            <div class="education-section" data-aos="fade-up">
+                <h3 class="section-title">Education Journey</h3>
+                <div class="timeline">
+                    <!-- BTech -->
+                    <div class="timeline-item" data-aos="fade-up">
+                        <div class="timeline-dot">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="edu-logo">
+                                    <img src="{{ url_for('static', filename='image/kbn.jpg') }}" alt="">
+                                </div>
+                                <div class="edu-info">
+                                    <h4>Bachelor of ComputerScience</h4>
+                                    <p class="duration">2022 - 2025</p>
+                                </div>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="course">Computer Science</p>
+                                <p class="institute">KBN college</p>
+                                <div class="grade-pill">
+                                    <i class="fas fa-award"></i>
+                                    <span>CGPA: 8.5/10</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intermediate -->
+                    <div class="timeline-item" data-aos="fade-up">
+                        <div class="timeline-dot">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="edu-logo">
+                                    <img src="{{ url_for('static', filename='image/zh.jpeg') }}" alt="ZH">
+                                </div>
+                                <div class="edu-info">
+                                    <h4>Intermediate Education</h4>
+                                    <p class="duration">2020 - 2022</p>
+                                </div>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="course">MPC (Mathematics, Physics, Chemistry)</p>
+                                <p class="institute">DR zakir hussain Junior College</p>
+                                <div class="grade-pill">
+                                    <i class="fas fa-award"></i>
+                                    <span>Percentage: 55%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- School -->
+                    <div class="timeline-item" data-aos="fade-up">
+                        <div class="timeline-dot">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="edu-logo">
+                                    <img src="{{ url_for('static', filename='image/ssc.jpeg') }}" alt="School">
+                                </div>
+                                <div class="edu-info">
+                                    <h4>Secondary Education</h4>
+                                    <p class="duration">2019 - 2020</p>
+                                </div>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="course">SSC (Secondary School Certificate)</p>
+                                <p class="institute">zp boys High School</p>
+                                <div class="grade-pill">
+                                    <i class="fas fa-award"></i>
+                                    <span>GPA: 9.5/10</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-container">
+                <div class="skill-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Frontend</h3>
+                    <p>HTML, CSS, JavaScript</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Backend</h3>
+                    <p>Python, Flask</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Database</h3>
+                    <p>MySQL</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <h2 class="section-title">My Skills</h2>
+        <div class="skills-content">
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Frontend Development</h3>
+                    <div class="skill-bars">
+                        <div class="skill-bar">
+                            <span class="skill-name">HTML/CSS</span>
+                            <div class="bar">
+                                <div class="progress" style="width: 95%;" data-value="95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="bar">
+                                <div class="progress" style="width: 90%;" data-value="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <span class="skill-name">React.js</span>
+                            <div class="bar">
+                                <div class="progress" style="width: 85%;" data-value="85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Backend Development</h3>
+                    <div class="skill-bars">
+                        <div class="skill-bar">
+                            <span class="skill-name">Python</span>
+                            <div class="bar">
+                                <div class="progress" style="width: 92%;" data-value="92%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <span class="skill-name">Flask</span>
+                            <div class="bar">
+                                <div class="progress" style="width: 88%;" data-value="88%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <span class="skill-name">SQL</span>
+                            <div class="bar">
+                                <div class="progress" style="width: 85%;" data-value="85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <h2 class="section-title" data-aos="fade-up">My Projects</h2>
+        <div class="projects-container">
+            <div class="projects-grid">
+                <!-- AI Stock Slave -->
+                <div class="project-card" data-aos="fade-up">
+                    <img src="{{ url_for('static', filename='image/sl.png') }}" alt="AI Landscaper">
+                    <div class="project-info">
+                        <h3>AI Landscaper</h3>
+                        <p>An intelligent landscape design assistant that uses AI to help users visualize and plan outdoor spaces. Features automated design suggestions and plant recommendations.</p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>TensorFlow</span>
+                            <span>Computer Vision</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/saileelavardhan/AI-Landscaper" target="_blank" class="project-icon" title="View Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="{{ url_for('static', filename='projects/task1/index.html') }}" class="project-icon" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div> 
+
+                <!-- Luxury Car Garage -->
+                <div class="project-card" data-aos="fade-up">
+                    <img src="{{ url_for('static', filename='image/cars.png') }}" alt="Luxury Car Garage">
+                    <div class="project-info">
+                        <h3>Luxury Car Garage</h3>
+                        <p>An exclusive car showroom website showcasing high-end vehicles with detailed specifications, pricing, and virtual tour features.</p>
+                        <div class="project-tech">
+                            <span>HTML5</span>
+                            <span>CSS3</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/saileelavardhan/car-garage" target="_blank" class="project-icon" title="View Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="{{ url_for('static', filename='projects/task1/index.html') }}" class="project-icon" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Portal -->
+                <div class="project-card" data-aos="fade-up">
+                    <img src="{{ url_for('static', filename='image/application.png') }}" alt="Job Portal">
+                    <div class="project-info">
+                        <h3>Job Application Portal</h3>
+                        <p>A comprehensive job application platform where users can submit applications, upload resumes, and track their application status.</p>
+                        <div class="project-tech">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/job-portal" target="_blank" class="project-icon" title="View Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="{{ url_for('static', filename='projects/task2/index.html') }}" class="project-icon" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator -->
+                <div class="project-card" data-aos="fade-up">
+                    <img src="{{ url_for('static', filename='image/cal.png') }}" alt="Calculator">
+                    <div class="project-info">
+                        <h3>Advanced Calculator</h3>
+                        <p>A feature-rich calculator application supporting complex mathematical operations and scientific calculations.</p>
+                        <div class="project-tech">
+                            <span>HTML5</span>
+                            <span>CSS3</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/calculator" target="_blank" class="project-icon" title="View Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="{{ url_for('static', filename='projects/task3/index.html') }}" class="project-icon" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Booking -->
+                <div class="project-card" data-aos="fade-up">
+                    <img src="{{ url_for('static', filename='image/booking.png') }}" alt="Movie Booking">
+                    <div class="project-info">
+                        <h3>Movie Booking System</h3>
+                        <p>An interactive movie ticket booking platform with seat selection and secure payment integration.</p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>Flask</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/movie-booking" target="_blank" class="project-icon" title="View Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="{{ url_for('static', filename='projects/task4/splash.html') }}" class="project-icon" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Mart -->
+                <div class="project-card" data-aos="fade-up">
+                    <img src="{{ url_for('static', filename='image/e com.png') }}" alt="Daily Mart">
+                    <div class="project-info">
+                        <h3>Daily Mart</h3>
+                        <p>A modern grocery e-commerce platform featuring product categories and shopping cart functionality.</p>
+                        <div class="project-tech">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/daily-mart" target="_blank" class="project-icon" title="View Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="{{ url_for('static', filename='projects/task5/index.html') }}" class="project-icon" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="info">
+                        <h3>Email</h3>
+                        <a href="mailto:saileela979@gmail.com">saileela979@gmail.com</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div class="info">
+                        <h3>Phone</h3>
+                        <a href="tel:+916301393679">+91 6301393679</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="info">
+                        <h3>Location</h3>
+                        <p>Vijayawada,Andhra Pradesh in India</p>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form" action="{{ url_for('contact') }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://github.com/saileelavardhan" target=""><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/sai-undefined-865040299" target=""><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:saileela979@gmail.com"><i class="fas fa-envelope"></i></a>
+
+               
+            </div>
+            <p class="copyright">© 2024 Leelavardhan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 
